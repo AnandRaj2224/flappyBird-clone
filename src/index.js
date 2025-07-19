@@ -6,9 +6,6 @@ const config = {
   height: 600,
   physics: {
     default: "arcade",
-    arcade: {
-      gravity: { y: 200 },
-    },
   },
   scene: {
     preload: preload,
@@ -23,11 +20,14 @@ function preload() {
   // Contains functions and properties we can use
   this.load.image("sky", "assets/sky.png");
   this.load.image("bird", "assets/bird.png");
+  this.load.image("pipe", "assets/pipe.png");
 }
 
 const VELOCITY = 200;
 const FLAP_VELOCITY = 250;
 let bird = null;
+let upperPipe = null;
+let lowerPipe = null;
 
 const initialBirdPostion = {
   x : config.width * 0.1,
@@ -37,8 +37,11 @@ const initialBirdPostion = {
 function create() {
   // Place images in the center of the canvas
   this.add.image(config.width / 2, config.height / 2, "sky");
-  bird = this.physics.add.image( initialBirdPostion.x, initialBirdPostion.y, "bird").setOrigin(0);
-  bird.body.gravity.y = 200;
+  bird = this.physics.add.sprite( initialBirdPostion.x, initialBirdPostion.y, "bird").setOrigin(0);
+  upperPipe = this.physics.add.sprite( 400, 100, "pipe").setOrigin(0,1);
+  lowerPipe = this.physics.add.sprite( 400, upperPipe.y + 100, "pipe").setOrigin(0,0);
+
+  bird.body.gravity.y = 400;
   bird.body.velocity  = VELOCITY;
 
   this.input.on('pointerdown', flap);
