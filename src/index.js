@@ -25,6 +25,7 @@ function preload() {
   this.load.image("bird", "assets/bird.png");
 }
 
+const VELOCITY = 200;
 let bird = null;
 
 function create() {
@@ -32,10 +33,15 @@ function create() {
   this.add.image(config.width / 2, config.height / 2, "sky");
   bird = this.physics.add.image(config.width / 10, config.height / 2, "bird");
   bird.body.gravity.y = 200;
+  bird.body.velocity  = VELOCITY;
 }
 
-function update () {
-  
+function update (time , delta) {
+  if(bird.x >= config.width - bird.width) {
+    bird.body.velocity  = -VELOCITY;
+  } else if(bird.x <= 0) {
+    bird.body.velocity  = VELOCITY;
+  }
 }
 
 new Phaser.Game(config);
