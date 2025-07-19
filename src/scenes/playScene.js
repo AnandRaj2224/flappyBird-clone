@@ -2,13 +2,10 @@ import Phaser from "phaser";
 
 class PlayScene extends Phaser.Scene {
 
-  constructor() {
+  constructor(config) {
     super('playScene');
-    this.initialBirdPostion = {
-      x : 80,
-      y : 300
-  }
-  this.bird = null;
+    this.config = config;
+    this.bird = null;
   }
 
   preLoad() {
@@ -18,7 +15,7 @@ class PlayScene extends Phaser.Scene {
 
   create() {
     this.add.image(0,0, "sky").setOrigin(0);
-    this.bird = this.physics.add.sprite( this.initialBirdPostion.x, this.initialBirdPostion.y, "bird").setOrigin(0);
+    this.bird = this.physics.add.sprite( this.config.startPostion.x, this.config.startPostion.y, "bird").setOrigin(0);
     bird.body.gravity.y = 400;
   }
 
