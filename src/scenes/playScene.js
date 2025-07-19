@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 
 const PIPES_TO_RENDER = 4;
+const VELOCITY = 200;
 
 class PlayScene extends Phaser.Scene {
 
@@ -10,6 +11,7 @@ class PlayScene extends Phaser.Scene {
     this.bird = null;
     this.pipes = null;
     this.FLAP_VELOCITY = 250;
+    
 
     this.pipeHorizontalDistance = 0;
     this.pipeHorizontalDistanceRange = [500,550];
@@ -17,7 +19,7 @@ class PlayScene extends Phaser.Scene {
 
   }
 
-  preLoad() {
+  preload() {
     this.load.image("sky", "assets/sky.png");
     this.load.image("bird", "assets/bird.png");
     this.load.image("pipe", "assets/pipe.png");
@@ -31,9 +33,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   update() {
-    if(bird.y > config.height || bird.y < -config.height) {
-      this.restartBirdPositon();
-    }
+    this.checkGameStatus();
     this.recyclePipes();
   }
 
@@ -43,11 +43,11 @@ class PlayScene extends Phaser.Scene {
 
   createBird() {
     this.bird = this.physics.add.sprite( this.config.startPostion.x, this.config.startPostion.y, "bird").setOrigin(0);
-    bird.body.gravity.y = 400;
+    this.bird.body.gravity.y = 400;
   }
 
   createPipes() {
-    pipes = this.physics.add.group();
+    this.pipes = this.physics.add.group();
 
     for(let i = 0; i <= PIPES_TO_RENDER; i++) {
       const upperPipe = this.pipes.create( 0,0, "pipe").setOrigin(0,1);
@@ -61,9 +61,14 @@ class PlayScene extends Phaser.Scene {
     this.input.on('pointerdown', this.flap,this);
     this.input.keyboard.on('keydown_SPACE', this.flap,this);
   }
+  checkGameStatus() {
+    if(this.bird.y > this.config.height || this.bird.y < -this.config.height) {
+    this.restartBirdPositon();
+    }
 
+  }
   placePipes(uPipe,lPipe) {
-    const rightMostPipe = getRightMostPipe();
+    const rightMostPipe = this.getRightMostPipe();
     const pipeVerticalDistance = Phaser.Math.Between(...this.pipeVerticalDistanceRange);
     const pipeHorizontalDistance = Phaser.Math.Between(...this.pipeHorizontalDistanceRange);
     const upperPipePostion = Phaser.Math.Between(20,this.config.height-20-pipeVerticalDistance);
