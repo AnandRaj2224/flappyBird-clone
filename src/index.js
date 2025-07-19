@@ -58,6 +58,7 @@ function update (time , delta) {
   if(bird.y > config.height || bird.y < -config.height) {
     restartBirdPositon();
   }
+  recyclePipes();
 }
 
 function placePipes(uPipe,lPipe) {
@@ -76,7 +77,17 @@ function placePipes(uPipe,lPipe) {
   lPipe.setVelocityX(-VELOCITY);
 
 }
-
+function recyclePipes() {
+  const tempPipes = [];
+  pipes.getChildren().forEach(pipe => {
+    if(pipe.getBounds().right <= 0) {
+      tempPipes.push(pipe);
+      if(tempPipes.length === 2) {
+        placePipes(...tempPipes);
+      }
+    }
+  });
+}
 function getRightMostPipe() {
   let rightMostPipe = 0;
 
