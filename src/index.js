@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import PlayScene from "./scenes/playScene";
 
 const config = {
   type: Phaser.AUTO,
@@ -7,11 +8,7 @@ const config = {
   physics: {
     default: "arcade"
   },
-  scene: {
-    preload: preload,
-    create: create,
-    update : update,
-  },
+  scene: [PlayScene] 
 };
 
 let bird = null;
@@ -30,15 +27,10 @@ const initialBirdPostion = {
 }
 
 function preload() {
-  this.load.image("sky", "assets/sky.png");
-  this.load.image("bird", "assets/bird.png");
   this.load.image("pipe", "assets/pipe.png");
 }
 
 function create() {
-  this.add.image(0,0, "sky").setOrigin(0);
-  bird = this.physics.add.sprite( initialBirdPostion.x, initialBirdPostion.y, "bird").setOrigin(0);
-  bird.body.gravity.y = 400;
   pipes = this.physics.add.group();
 
   for(let i = 0; i <= PIPES_TO_RENDER; i++) {
