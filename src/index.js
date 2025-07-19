@@ -5,7 +5,7 @@ const config = {
   width: 800,
   height: 600,
   physics: {
-    default: "arcade",
+    default: "arcade"
   },
   scene: {
     preload: preload,
@@ -18,39 +18,34 @@ let bird = null;
 
 const VELOCITY = 200;
 const FLAP_VELOCITY = 250;
-
-
-let upperPipe = null;
-let lowerPipe = null;
+const PIPES_TO_RENDER = 4;
+let pipeHorizontalDistance = 0;
 
 const pipeDistance = [100,250];
-let pipeVerticalDistance = Phaser.Math.Between(...pipeDistance);
 
 const initialBirdPostion = {
   x : config.width * 0.1,
   y : config.height / 2
 }
 
-// Loading assets like images, music, etc.
 function preload() {
-  // 'this' context -- scene
-  // Contains functions and properties we can use
   this.load.image("sky", "assets/sky.png");
   this.load.image("bird", "assets/bird.png");
   this.load.image("pipe", "assets/pipe.png");
 }
 
-
-
 function create() {
-  // Place images in the center of the canvas
-  this.add.image(config.width / 2, config.height / 2, "sky");
+  this.add.image(0,0, "sky").setOrigin(0);
   bird = this.physics.add.sprite( initialBirdPostion.x, initialBirdPostion.y, "bird").setOrigin(0);
-  upperPipe = this.physics.add.sprite( 400, 100, "pipe").setOrigin(0,1);
-  lowerPipe = this.physics.add.sprite( 400, upperPipe.y + pipeVerticalDistance, "pipe").setOrigin(0,0);
-
   bird.body.gravity.y = 400;
-  bird.body.velocity  = VELOCITY;
+
+
+  for(let i = 0; i <= PIPES_TO_RENDER; i++) {
+    const upperPipe = this.physics.add.sprite( 0,0, "pipe").setOrigin(0,1);
+    const lowerPipe = this.physics.add.sprite( 0,0, "pipe").setOrigin(0,0);
+
+    placePipes(upperPipe,lowerPipe);
+  }
 
   this.input.on('pointerdown', flap);
   this.input.keyboard.on('keydown_SPACE', flap);
@@ -58,22 +53,34 @@ function create() {
 }
 
 function update (time , delta) {
-  if(bird.x >= config.width - bird.width) {
-    bird.body.velocity  = -VELOCITY;
-  } else if(bird.x <= 0) {
-    bird.body.velocity  = VELOCITY;
-  }
   if(bird.y > config.height || bird.y < -config.height) {
     restartBirdPositon();
   }
 }
 
 function restartBirdPositon() {
-    bird.y = initialBirdPostion.y;
-    bird.velocity.y = 0; 
+  bird.x = initialBirdPostion.x;
+  bird.y = initialBirdPostion.y;
+  bird.setVelocityY(0);
 }
 
 function flap() {
-  bird.body.velocity = FLAP_VELOCITY;
+  bird.body.velocity.y = -FLAP_VELOCITY;
+}
+
+function placePipes(uPipe,lPipe) {
+  pipeHorizontalDistance += 400;
+  let pipeVerticalDistance = Phaser.Math.Between(...pipeDistance);
+  let upperPipePostion = Phaser.Math.Between(20,config.height-20-pipeVerticalDistance);
+
+  uPipe.x = pipeHorizontalDistance;
+  uPipe.y = upperPipePostion;
+
+  lPipe.x = uPipe.x;
+  lPipe.y = uPipe.y + pipeVerticalDistance;
+
+  uPipe.setVelocityX(-VELOCITY);
+  lPipe.setVelocityX(-VELOCITY);
+
 }
 new Phaser.Game(config);
