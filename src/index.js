@@ -14,6 +14,23 @@ const config = {
   },
 };
 
+let bird = null;
+
+const VELOCITY = 200;
+const FLAP_VELOCITY = 250;
+
+
+let upperPipe = null;
+let lowerPipe = null;
+
+const pipeDistance = [100,250];
+let pipeVerticalDistance = Phaser.Math.Between(...pipeDistance);
+
+const initialBirdPostion = {
+  x : config.width * 0.1,
+  y : config.height / 2
+}
+
 // Loading assets like images, music, etc.
 function preload() {
   // 'this' context -- scene
@@ -23,23 +40,14 @@ function preload() {
   this.load.image("pipe", "assets/pipe.png");
 }
 
-const VELOCITY = 200;
-const FLAP_VELOCITY = 250;
-let bird = null;
-let upperPipe = null;
-let lowerPipe = null;
 
-const initialBirdPostion = {
-  x : config.width * 0.1,
-  y : config.height / 2
-}
 
 function create() {
   // Place images in the center of the canvas
   this.add.image(config.width / 2, config.height / 2, "sky");
   bird = this.physics.add.sprite( initialBirdPostion.x, initialBirdPostion.y, "bird").setOrigin(0);
   upperPipe = this.physics.add.sprite( 400, 100, "pipe").setOrigin(0,1);
-  lowerPipe = this.physics.add.sprite( 400, upperPipe.y + 100, "pipe").setOrigin(0,0);
+  lowerPipe = this.physics.add.sprite( 400, upperPipe.y + pipeVerticalDistance, "pipe").setOrigin(0,0);
 
   bird.body.gravity.y = 400;
   bird.body.velocity  = VELOCITY;
