@@ -8,7 +8,7 @@ const BIRD_POSITION = {x: WIDTH * 0.1, y : HEIGHT / 2};
 const SHARED_CONFIG = {
   width : WIDTH,
   height : HEIGHT,
-  startingPostion : BIRD_POSITION,
+  startPostion : BIRD_POSITION,
 }
 const config = {
   type: Phaser.AUTO,
@@ -19,6 +19,5 @@ const config = {
   scene: [new PlayScene(SHARED_CONFIG)] 
 };
 
-const VELOCITY = 200;
 
 new Phaser.Game(config);
