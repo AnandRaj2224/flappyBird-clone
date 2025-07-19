@@ -28,11 +28,16 @@ function preload() {
 const VELOCITY = 200;
 const FLAP_VELOCITY = 250;
 let bird = null;
-let totalDelta = null;
+
+const initialBirdPostion = {
+  x : config.width * 0.1,
+  y : config.height / 2
+}
+
 function create() {
   // Place images in the center of the canvas
   this.add.image(config.width / 2, config.height / 2, "sky");
-  bird = this.physics.add.image(config.width * 0.1, config.height / 2, "bird").setOrigin(0);
+  bird = this.physics.add.image( initialBirdPostion.x, initialBirdPostion.y, "bird").setOrigin(0);
   bird.body.gravity.y = 200;
   bird.body.velocity  = VELOCITY;
 
@@ -47,6 +52,14 @@ function update (time , delta) {
   } else if(bird.x <= 0) {
     bird.body.velocity  = VELOCITY;
   }
+  if(bird.y > config.height || bird.y < -config.height) {
+    restartBirdPositon();
+  }
+}
+
+function restartBirdPositon() {
+    bird.y = initialBirdPostion.y;
+    bird.velocity.y = 0; 
 }
 
 function flap() {
