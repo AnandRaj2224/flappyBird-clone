@@ -1,13 +1,71 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <style>
-      body {
-        padding: 200px;
-      }
-    </style>
-  </head>
-  <body>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLAPPY BIRD</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #1e1e1e;
+      color: #f0f0f0;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin: 20px 0 10px;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    #game-container {
+      border: 3px solid #00ffcc;
+      box-shadow: 0 0 20px #00ffcc;
+      margin-top: 10px;
+    }
+      #footer {
+    margin: 16px auto 40px; /* top, horizontal center, bottom spacing */
+    max-width: 800px;       /* match your game width */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    color: #555;
+    text-align: center;
+    user-select: none;
+  }
+
+  #footer strong {
+    color: #222;
+  }
+
+  #footer-link {
+    color: #1e90ff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.25s ease;
+  }
+
+  #footer-link:hover,
+  #footer-link:focus {
+    color: #104e8b;
+    text-decoration: underline;
+  }
+  </style>
+</head>
+<body>
+  <h1>Flappy Bird 🐦</h1>
+  <div id="game-container"></div>
+  <div id="footer">
+    Made by
+  <a href="https://github.com/AnandRaj2224"> Anand Raj</a> 
+</body>
 </html>

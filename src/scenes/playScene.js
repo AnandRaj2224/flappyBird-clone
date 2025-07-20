@@ -1,4 +1,4 @@
-import BaseScene from './baseSceneaseScene';
+import BaseScene from './baseScene';
 
 const PIPES_TO_RENDER = 4;
 const VELOCITY = 200;

@@ -21,11 +21,12 @@ const initScenes = () => Scenes.map(createScene);
 const SHARED_CONFIG = {
   width : WIDTH,
   height : HEIGHT,
-  startPostion : BIRD_POSITION,
+  startPosition : BIRD_POSITION,
 }
 const config = {
   type: Phaser.AUTO,
   ...SHARED_CONFIG,
+  parent: 'game-container',
   pixelArt: true,
   physics: {
     default: "arcade"
