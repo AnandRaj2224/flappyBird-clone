@@ -1,13 +1,12 @@
-import Phaser from "phaser";
+import BaseScene from './baseSceneaseScene';
 
 const PIPES_TO_RENDER = 4;
 const VELOCITY = 200;
 
-class PlayScene extends Phaser.Scene {
+class PlayScene extends BaseScene {
 
   constructor(config) {
-    super('playScene');
-    this.config = config;
+    super('PlayScene', config);
     this.bird = null;
     this.pipes = null;
     this.FLAP_VELOCITY = 300;
@@ -22,7 +21,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
-    this.createBG();
+    super.create();
     this.createBird();
     this.createPipes();
     this.createScore();
