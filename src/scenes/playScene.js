@@ -9,18 +9,34 @@ class PlayScene extends BaseScene {
     super('PlayScene', config);
     this.bird = null;
     this.pipes = null;
+    this.isPaused = false;
+
     this.FLAP_VELOCITY = 300;
     
 
     this.pipeHorizontalDistance = 0;
-    this.pipeHorizontalDistanceRange = [500,550];
-    this.pipeVerticalDistanceRange = [100,250];
-
     this.score = 0;
     this.scoreText = '';
+
+    this.currentDifficulty = 'easy';
+    this.difficulties = {
+      'easy': {
+        pipeHorizontalDistanceRange: [300, 350],
+        pipeVerticalDistanceRange: [150, 200]
+      },
+      'normal': {
+        pipeHorizontalDistanceRange: [280, 330],
+        pipeVerticalDistanceRange: [140, 190]
+      },
+      'hard': {
+        pipeHorizontalDistanceRange: [250, 310],
+        pipeVerticalDistanceRange: [120, 150]
+      }
+    }
   }
 
   create() {
+    this.currentDifficulty = 'hard';
     super.create();
     this.createBird();
     this.createPipes();
@@ -55,6 +71,7 @@ class PlayScene extends BaseScene {
     this.initialTime--;
     this.countDownText.setText('Fly in: ' + this.initialTime);
     if (this.initialTime <= 0) {
+      this.isPaused = false;
       this.countDownText.setText('');
       this.physics.resume();
       this.timedEvent.remove();
@@ -94,12 +111,14 @@ class PlayScene extends BaseScene {
   }
 
   createPause() {
-     const pauseButton = this.add.image(this.config.width - 10, this.config.height -10, 'pause')
+    this.isPaused = false;
+    const pauseButton = this.add.image(this.config.width - 10, this.config.height -10, 'pause')
       .setInteractive()
       .setScale(3)
       .setOrigin(1)
 
-      pauseButton.on('pointerdown', () => {
+    pauseButton.on('pointerdown', () => {
+        this.isPaused = true;
         this.physics.pause();
         this.scene.pause();
         this.scene.launch('PauseScene');
@@ -117,9 +136,10 @@ class PlayScene extends BaseScene {
 
   }
   placePipes(uPipe,lPipe) {
+    const difficulty = this.difficulties[this.currentDifficulty];
     const rightMostPipe = this.getRightMostPipe();
-    const pipeVerticalDistance = Phaser.Math.Between(...this.pipeVerticalDistanceRange);
-    const pipeHorizontalDistance = Phaser.Math.Between(...this.pipeHorizontalDistanceRange);
+    const pipeVerticalDistance = Phaser.Math.Between(...difficulty.pipeVerticalDistanceRange);
+    const pipeHorizontalDistance = Phaser.Math.Between(...difficulty.pipeHorizontalDistanceRange);
     const upperPipePostion = Phaser.Math.Between(20,this.config.height-20-pipeVerticalDistance);
   
     uPipe.x = rightMostPipe + pipeHorizontalDistance;
@@ -180,6 +200,7 @@ class PlayScene extends BaseScene {
   }
   
   flap() {
+    if (this.isPaused) { return; }
     this.bird.body.velocity.y = -this.FLAP_VELOCITY;
   }
   increaseScore() {

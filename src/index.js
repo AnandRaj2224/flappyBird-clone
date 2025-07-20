@@ -10,7 +10,7 @@ import PauseScene from './scenes/pauseScene';
 
 
 const WIDTH = 800;
-const HEIGHT = 600;
+const HEIGHT = 400;
 const BIRD_POSITION = {x: WIDTH * 0.1, y : HEIGHT / 2};
 
 const Scenes = [PreloadScene, MenuScene, ScoreScene, PlayScene, PauseScene];
