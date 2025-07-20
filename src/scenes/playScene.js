@@ -30,13 +30,13 @@ class PlayScene extends BaseScene {
       },
       'hard': {
         pipeHorizontalDistanceRange: [250, 310],
-        pipeVerticalDistanceRange: [120, 150]
+        pipeVerticalDistanceRange: [50, 100]
       }
     }
   }
 
   create() {
-    this.currentDifficulty = 'hard';
+    this.currentDifficulty = 'easy';
     super.create();
     this.createBird();
     this.createPipes();
@@ -161,10 +161,22 @@ class PlayScene extends BaseScene {
           this.placePipes(...tempPipes);
           this.increaseScore();
           this.saveBestScore();
+          this.increaseDifficulty();
         }
       }
     });
   }
+
+   increaseDifficulty() {
+    if (this.score === 1) {
+      this.currentDifficulty = 'normal';
+    }
+
+    if (this.score === 3) {
+      this.currentDifficulty = 'hard';
+    }
+  }
+
   getRightMostPipe() {
     let rightMostPipe = 0;
   
