@@ -50,11 +50,15 @@ class PlayScene extends Phaser.Scene {
     this.pipes = this.physics.add.group();
 
     for(let i = 0; i <= PIPES_TO_RENDER; i++) {
-      const upperPipe = this.pipes.create( 0,0, "pipe").setOrigin(0,1);
-      const lowerPipe = this.pipes.create( 0,0, "pipe").setOrigin(0,0);
+      const upperPipe = this.pipes.create( 0,0, "pipe").setImmovable(true).setOrigin(0,1);
+      const lowerPipe = this.pipes.create( 0,0, "pipe").setImmovable(true).setOrigin(0,0);
       this.placePipes(upperPipe,lowerPipe);
       this.pipes.setVelocityX(-200);
     }
+  }
+  
+  createColliders() {
+    this.physics.add.collider(this.bird,this.pipes,this.gameOver,null,this);
   }
 
   handleInputs() {
@@ -63,7 +67,7 @@ class PlayScene extends Phaser.Scene {
   }
   checkGameStatus() {
     if(this.bird.y > this.config.height || this.bird.y < -this.config.height) {
-    this.restartBirdPositon();
+    this.gameOver();
     }
 
   }
@@ -103,7 +107,7 @@ class PlayScene extends Phaser.Scene {
     return rightMostPipe;
   }
   
-  restartBirdPositon() {
+  gameOver() {
     this.bird.x = this.config.startPostion.x;
     this.bird.y = this.config.startPostion.y;
     this.bird.setVelocityY(0);
