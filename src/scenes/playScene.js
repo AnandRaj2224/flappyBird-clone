@@ -110,11 +110,17 @@ class PlayScene extends Phaser.Scene {
   }
   
   gameOver() {
-    // this.bird.x = this.config.startPostion.x;
-    // this.bird.y = this.config.startPostion.y;
-    // this.bird.setVelocityY(0);
     this.physics.pause();
     this.bird.setTint(0xEE4824);
+
+    this.time.addEvent({
+      delay : 1000,
+      callback : () => {
+        this.scene.restart();
+      },
+      loop : false
+    });
+   
   }
   
   flap() {
