@@ -7,7 +7,7 @@ import ScoreScene from './scenes/scoreScene';
 import PauseScene from './scenes/pauseScene';
 
 
-
+const isMobile = window.innerWidth <= 768; // or any breakpoint you like
 
 const WIDTH = 800;
 const HEIGHT = 400;
@@ -30,6 +30,10 @@ const config = {
   pixelArt: true,
   physics: {
     default: "arcade"
+  },
+  scale: {
+    mode: isMobile ? Phaser.Scale.FIT : Phaser.Scale.NONE,  // scale down only on mobile
+    autoCenter: Phaser.Scale.CENTER_BOTH,
   },
    scene: initScenes()
 }
